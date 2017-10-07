@@ -12,7 +12,8 @@
   "author": "Jose Centeno <jmcenteno@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "babel-polyfill": "^6.26.0"
+    "babel-polyfill": "^6.26.0",
+    "normalize.scss": "^0.1.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.5",
