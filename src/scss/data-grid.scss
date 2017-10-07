@@ -1,0 +1,42 @@
+.data-grid {
+  width: 100%;
+  max-width: 100%;
+
+  thead > tr {
+
+    &:first-child {
+      
+      > th, 
+      > td {
+        border-top: none;
+      }
+
+    }
+    
+    > th,
+    > td {
+      vertical-align: bottom;
+      border-bottom: 2px solid #ddd;
+      font-weight: 700;
+
+      .icon {
+        margin-left: 8px;
+      }
+
+    }
+
+  }
+
+  thead, tbody, tfoot {
+    
+    > tr > th,
+    > tr > td {
+      padding: 8px;
+      line-height: 1.846;
+      vertical-align: top;
+      border-top: 1px solid #ddd;
+    }
+
+  }
+
+}

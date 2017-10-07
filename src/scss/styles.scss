@@ -1,6 +1,13 @@
 @import '../../node_modules/normalize.scss/normalize';
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500,700");
 @import './fonts';
+@import './data-grid';
 
 * {
   box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', Helvetica, arial, sans-serif;
+  font-size: 14px;
 }
