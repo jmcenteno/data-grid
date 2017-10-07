@@ -73,6 +73,11 @@ module.exports = {
             }
           ]
         }),
+      },
+      {
+        test: /\.(woff2|woff|ttf|eot|svg|otf)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        include: path.resolve(__dirname, 'src'),
+        loader: ['url-loader?name=fonts/[name].[hash].[ext]']
       }
     ]
   },
