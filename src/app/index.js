@@ -36,7 +36,7 @@ export default function init() {
 
     })
     .catch((error) => {
-      console.log(error);
+      throw new Error(error);
     });
 
 }

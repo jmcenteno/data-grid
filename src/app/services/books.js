@@ -15,7 +15,7 @@ export function Book(args) {
  * Books service contructor
  */
 function BooksService() {
-  this.url = 'https://skookum-test-api.herokuapp.com/api/v1/books'
+  this.url = 'https://skookum-test-api.herokuapp.com/api/v1/books';
 }
 
 BooksService.prototype.get = function get() {
