@@ -1,0 +1,48 @@
+$border-color: #ddd;
+$sorted-color: #47bc94;
+$btn-color: #868e96;
+
+.data-grid {
+
+  .table {
+
+    thead > tr {
+      
+      > th,
+      > td {
+        white-space: nowrap;
+        user-select: none;
+
+        &.sortable {
+          cursor: pointer;
+        }
+
+        .icon {
+          margin-left: 8px;
+        }
+
+      }
+
+    }
+
+  }
+
+  .filter {
+
+    .form-control {
+      max-width: 300px;
+    }
+
+  }
+
+  .pagination {
+
+    .form-control {
+      width: auto;
+      min-width: 36px;
+      display: inline-block;
+    }
+
+  }
+
+}
