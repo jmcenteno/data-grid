@@ -5,6 +5,7 @@
     "node": true
   },
   "rules": {
+    "class-methods-use-this": "off",
     "comma-dangle": "off",
     "object-curly-newline": "off",
     "padded-blocks": "off"
