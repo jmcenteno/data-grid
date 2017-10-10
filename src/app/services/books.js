@@ -4,10 +4,10 @@
  */
 export function Book(args) {
 
-  this.title = args.title || 'N/A';
-  this.author = args.author || 'N/A';
-  this.year = args.year || 'N/A';
-  this.isbn = args.isbn || 'N/A';
+  this.title = args.title || '';
+  this.author = args.author || '';
+  this.year = args.year || '';
+  this.isbn = args.isbn || '';
 
 }
 
