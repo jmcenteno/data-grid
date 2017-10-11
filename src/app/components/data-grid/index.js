@@ -3,6 +3,8 @@ import classnames from 'classnames';
 import * as Helpers from './helpers';
 import template from './template.html';
 
+import Pagination from '../pagination';
+
 class DataGrid {
 
   /**
@@ -39,7 +41,6 @@ class DataGrid {
 
     // bind methods to this class
     this.sortRows = this.sortRows.bind(this);
-    this.setCurrentPage = this.setCurrentPage.bind(this);
     this.setFilter = this.setFilter.bind(this);
 
   }
@@ -54,8 +55,18 @@ class DataGrid {
 
     this.createHeader(this.columns);
     this.createBody(pages[this.state.pagination.currentPage] || [], this.columns);
-    this.createPagination(pages);
     this.createFilterControl();
+
+    const pagination = new Pagination(
+      this.rootElement.querySelector('.pagination-container'),
+      filteredData,
+      (eventData) => {
+        this.state.pagination = eventData;
+        this.update();
+      }
+    );
+
+    pagination.create();
 
   }
 
@@ -69,7 +80,6 @@ class DataGrid {
     const pages = Helpers.paginateRows(filteredData, 10);
 
     this.updateHeader();
-    this.updatePagination(pages);
 
     this.createBody(pages[pagination.currentPage], this.columns);
 
@@ -233,132 +243,6 @@ class DataGrid {
     };
 
     this.update();
-
-  }
-
-  /**
-   * Creates options for page selection and event listeners for buttons
-   * @param {array} pages Paginated array
-   */
-  createPagination(pages) {
-
-    const container = this.rootElement.querySelector('.pagination');
-
-    const select = container.querySelector('select');
-    const firstBtn = container.querySelector('.btn.first');
-    const prevBtn = container.querySelector('.btn.prev');
-    const nextBtn = container.querySelector('.btn.next');
-    const lastBtn = container.querySelector('.btn.last');
-
-    select.innerHTML = '';
-
-    // add options to the menu
-    pages.forEach((item, i) => {
-
-      // create on <option> element
-      const option = document.createElement('option');
-
-      // set option properties
-      option.innerText = i + 1;
-      option.setAttribute('value', i);
-
-      select.appendChild(option);
-
-    });
-
-    // handle onchange event for page selection dropdown
-    select.addEventListener('change', (e) => {
-      this.setCurrentPage(Number.parseInt(e.target.value, 10));
-    });
-
-    // handle onclick event for first page button
-    firstBtn.addEventListener('click', () => {
-      this.setCurrentPage(0);
-    });
-
-    // handle onclick event for previous and next page buttons
-    prevBtn.addEventListener('click', this.prevPage.bind(this));
-    nextBtn.addEventListener('click', this.nextPage.bind(this));
-
-    // handle onclick event for last page button
-    lastBtn.addEventListener('click', () => {
-      this.setCurrentPage(this.state.pagination.pages.length - 1);
-    });
-
-    // set pages in the state
-    this.state.pagination.pages = pages;
-
-  }
-
-  /**
-   * Updates options on the page selection dropdown
-   * @param {array} pages Paginated array
-   */
-  updatePagination(pages) {
-
-    const { pagination } = this.state;
-    const select = this.rootElement.querySelector('.pagination select');
-
-    // set pages and current page in the state
-    this.state.pagination.pages = pages;
-    this.state.pagination.currentPage = pages[pagination.currentPage] ? pagination.currentPage : 0;
-
-    // remove all options
-    select.innerHTML = '';
-
-    // add options to the menu
-    pages.forEach((item, i) => {
-
-      // create on <option> element
-      const option = document.createElement('option');
-
-      // set option properties
-      option.innerText = i + 1;
-      option.setAttribute('value', i);
-
-      select.appendChild(option);
-
-    });
-
-    // set the selected option
-    select.selectedIndex = pages[pagination.currentPage] ? pagination.currentPage : 0;
-
-  }
-
-  /**
-   * Sets the index of the paginated array as the current page
-   * @param {number} page
-   */
-  setCurrentPage(page) {
-
-    this.state.pagination.currentPage = page;
-    this.update();
-
-  }
-
-  /**
-   * Go to the next page
-   */
-  nextPage() {
-
-    const { pagination } = this.state;
-
-    if (pagination.currentPage + 1 < pagination.pages.length) {
-      this.setCurrentPage(pagination.currentPage + 1);
-    }
-
-  }
-
-  /**
-   * Go to the previous page
-   */
-  prevPage() {
-
-    const { pagination } = this.state;
-
-    if (pagination.currentPage > 0) {
-      this.setCurrentPage(pagination.currentPage - 1);
-    }
 
   }
 
