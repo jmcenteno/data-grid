@@ -5,6 +5,12 @@ import template from './template.html';
 
 class Pagination {
 
+  /**
+   * Pagination Component
+   * @param {Element} element DOM element where this component will be rendered
+   * @param {array} data Array of data that will be paginated
+   * @param {Function} onChangeHandler Callback function
+   */
   constructor(element, data = [], onChangeHandler) {
 
     this.rootElement = element;
@@ -20,6 +26,9 @@ class Pagination {
 
   }
 
+  /**
+   * Add the component to the DOM and sets event listeners for buttons and dropdown
+   */
   create() {
 
     const { pages } = this.state;
@@ -27,11 +36,65 @@ class Pagination {
 
     container.innerHTML = template;
 
-    const select = container.querySelector('select');
-    const firstBtn = container.querySelector('.btn.first');
-    const prevBtn = container.querySelector('.btn.prev');
-    const nextBtn = container.querySelector('.btn.next');
-    const lastBtn = container.querySelector('.btn.last');
+    this.rootElement.appendChild(container.firstChild);
+
+    const select = this.rootElement.querySelector('select');
+    const firstBtn = this.rootElement.querySelector('.btn.first');
+    const prevBtn = this.rootElement.querySelector('.btn.prev');
+    const nextBtn = this.rootElement.querySelector('.btn.next');
+    const lastBtn = this.rootElement.querySelector('.btn.last');
+
+    this.setPageOptions(pages);
+
+    // handle onchange event for page selection dropdown
+    select.addEventListener('change', (e) => {
+      this.setCurrentPage(Number.parseInt(e.target.value, 10));
+    });
+
+    // handle onclick event for first page button
+    firstBtn.addEventListener('click', () => {
+      this.setCurrentPage(0);
+    });
+
+    // handle onclick event for previous and next page buttons
+    prevBtn.addEventListener('click', this.prevPage.bind(this));
+    nextBtn.addEventListener('click', this.nextPage.bind(this));
+
+    // handle onclick event for last page button
+    lastBtn.addEventListener('click', () => {
+      this.setCurrentPage(pages.length - 1);
+    });
+
+  }
+
+  /**
+   * Updates the state, page options, and calls this.onChangeHandler callback
+   */
+  update() {
+
+    // update the component state
+    this.state.pages = Helpers.paginateRows(this.data, 10);
+    this.state.currentPage = (
+      this.state.currentPage <= this.state.pages.length - 1 ?
+        this.state.currentPage :
+        0
+    );
+
+    // create page options for dropdown
+    this.setPageOptions(this.state.pages);
+
+    // callback function
+    this.onChangeHandler(this.state);
+
+  }
+
+  /**
+   * Creates options for select dropdown based on the number of items in the array
+   * @param {array} pages Paginated array
+   */
+  setPageOptions(pages) {
+
+    const select = this.rootElement.querySelector('select');
 
     select.innerHTML = '';
 
@@ -49,32 +112,7 @@ class Pagination {
 
     });
 
-    // handle onchange event for page selection dropdown
-    select.addEventListener('change', (e) => {
-      this.setCurrentPage(Number.parseInt(e.target.value, 10));
-    });
-  
-    // handle onclick event for first page button
-    firstBtn.addEventListener('click', () => {
-      this.setCurrentPage(0);
-    });
-  
-    // handle onclick event for previous and next page buttons
-    prevBtn.addEventListener('click', this.prevPage.bind(this));
-    nextBtn.addEventListener('click', this.nextPage.bind(this));
-  
-    // handle onclick event for last page button
-    lastBtn.addEventListener('click', () => {
-      this.setCurrentPage(pages.length - 1);
-    });
-
-    this.rootElement.appendChild(container.firstChild);
-
-  }
-
-  update() {
-
-    this.onChangeHandler(this.state);
+    select.selectedIndex = this.state.currentPage;
 
   }
 
