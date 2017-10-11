@@ -4,10 +4,12 @@
  */
 export function Book(args) {
 
-  this.title = args.title || '';
-  this.author = args.author || '';
-  this.year = args.year || '';
-  this.isbn = args.isbn || '';
+  Object.keys(args).forEach((key) => {
+    Object.defineProperty(this, key, {
+      value: args[key],
+      enumerable: true
+    });
+  });
 
 }
 
