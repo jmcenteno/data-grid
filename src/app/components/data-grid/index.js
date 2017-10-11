@@ -3,12 +3,13 @@ import classnames from 'classnames';
 import * as Helpers from './helpers';
 import template from './template.html';
 
+import SearchInput from '../search';
 import Pagination from '../pagination';
 
 class DataGrid {
 
   /**
-   *
+   * DataGrid Component
    * @param {Element} element The DOM element where the table will be rendered
    * @param {object} config Object with columns and rows { columns, rows }
    */
@@ -41,7 +42,6 @@ class DataGrid {
 
     // bind methods to this class
     this.sortRows = this.sortRows.bind(this);
-    this.setFilter = this.setFilter.bind(this);
 
   }
 
@@ -53,10 +53,6 @@ class DataGrid {
     const filteredData = Helpers.filterRows(this.state.rows, this.state.filter);
     const pages = Helpers.paginateRows(filteredData, 10);
 
-    this.createHeader(this.columns);
-    this.createBody(pages[this.state.pagination.currentPage] || [], this.columns);
-    this.createFilterControl();
-
     const pagination = new Pagination(
       this.rootElement.querySelector('.pagination-container'),
       filteredData,
@@ -66,7 +62,24 @@ class DataGrid {
       }
     );
 
+    const search = new SearchInput(
+      this.rootElement.querySelector('.search-container'),
+      (eventData) => {
+        
+        this.state.filter = eventData;
+        
+        pagination.data = Helpers.filterRows(this.state.rows, eventData);
+        pagination.update();
+
+        this.update();
+
+      }
+    );
+
+    this.createHeader(this.columns);
+    this.createBody(pages[this.state.pagination.currentPage] || [], this.columns);
     pagination.create();
+    search.create();
 
   }
 
@@ -242,29 +255,6 @@ class DataGrid {
       order
     };
 
-    this.update();
-
-  }
-
-  /**
-   * Set event listener for filter input
-   */
-  createFilterControl() {
-
-    const container = this.rootElement.querySelector('.filter');
-    const input = container.querySelector('input');
-
-    input.value = this.state.filter || '';
-
-    input.addEventListener('keyup', (e) => {
-      this.setFilter(e.target.value);
-    });
-
-  }
-
-  setFilter(str) {
-
-    this.state.filter = (str === '' ? null : str);
     this.update();
 
   }
