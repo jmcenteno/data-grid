@@ -67,8 +67,8 @@ export function sortByKey(key) {
 
   return (a, b) => {
 
-    const rowA = a[key].toLowerCase();
-    const rowB = b[key].toLowerCase();
+    const rowA = (a[key] || '').toLowerCase();
+    const rowB = (b[key] || '').toLowerCase();
 
     let comparison = 0;
 
