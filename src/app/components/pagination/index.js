@@ -62,7 +62,7 @@ class Pagination {
 
     // handle onclick event for last page button
     lastBtn.addEventListener('click', () => {
-      this.setCurrentPage(pages.length - 1);
+      this.setCurrentPage(this.state.pages.length - 1);
     });
 
   }
