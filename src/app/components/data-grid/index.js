@@ -65,9 +65,9 @@ class DataGrid {
     const search = new SearchInput(
       this.rootElement.querySelector('.search-container'),
       (eventData) => {
-        
+
         this.state.filter = eventData;
-        
+
         pagination.data = Helpers.filterRows(this.state.rows, eventData);
         pagination.update();
 
