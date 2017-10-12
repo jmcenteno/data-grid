@@ -1,6 +1,4 @@
-import classnames from 'classnames';
-
-import * as Helpers from '../data-grid/helpers';
+import * as Helpers from '../../services/helpers';
 import template from './template.html';
 
 class Pagination {

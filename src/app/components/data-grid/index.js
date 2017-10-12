@@ -1,6 +1,6 @@
 import classnames from 'classnames';
 
-import * as Helpers from './helpers';
+import * as Helpers from '../../services/helpers';
 import template from './template.html';
 
 import SearchInput from '../search';
