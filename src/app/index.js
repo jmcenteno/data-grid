@@ -3,11 +3,15 @@ import '../scss/styles.scss';
 
 import DataGrid from './components/data-grid';
 import Spinner from './components/spinner';
+import ErrorMessage from './components/error-message';
 import Books from './services/books';
 
 export default function init() {
 
-  document.getElementById('root').innerHTML = Spinner();
+  const rootElement = document.getElementById('root');
+
+  rootElement.innerHTML = '';
+  rootElement.appendChild(Spinner());
 
   Books.get()
     .then((data) => {
@@ -36,9 +40,16 @@ export default function init() {
 
     })
     .catch((error) => {
+
+      // display a friendly error message
+      rootElement.innerHTML = '';
+      rootElement.appendChild(ErrorMessage(init));
+
+      // display the actual error message in the console
       throw new Error(error);
+
     });
 
 }
 
-init();
+window.addEventListener('load', init);
