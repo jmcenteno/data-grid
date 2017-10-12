@@ -11,6 +11,12 @@
 
         &.sortable {
           cursor: pointer;
+          transition: all 150ms ease;
+
+          &.sorted {
+            background-color: $gray-lighter;
+          }
+
         }
 
         .icon {
