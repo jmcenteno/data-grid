@@ -1,7 +1,14 @@
 import template from './template.html';
 
-export default function spinner() {
+/**
+ * Spinner Component
+ */
+export default function Spinner() {
 
-  return template;
+  const container = document.createElement('div');
+
+  container.innerHTML = template;
+
+  return container.firstChild;
 
 }
