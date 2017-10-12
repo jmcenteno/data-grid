@@ -27,15 +27,18 @@ function BooksService() {
 
 BooksService.prototype.get = function get() {
 
+  // wrap the XMLHttpRequest with a promise
   return new Promise((resolve, reject) => {
 
+    // configuration for XMLHttpRequest
     const config = {
       method: 'GET',
       mode: 'cors'
     };
 
+    // proceed with the request
     fetch(this.url, config)
-      .then(response => response.json())
+      .then(response => response.json()) // response.json() returns a promise
       .then((data) => {
 
         // create an array of Book objects

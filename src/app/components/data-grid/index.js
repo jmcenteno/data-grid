@@ -41,6 +41,7 @@ class DataGrid {
     this.rootElement.innerHTML = template;
 
     // bind methods to this class
+    // we need to do this because the context of 'this' will be different when the method is called
     this.sortRows = this.sortRows.bind(this);
 
   }
@@ -53,6 +54,7 @@ class DataGrid {
     const filteredData = Helpers.filterRows(this.state.rows, this.state.filter);
     const pages = Helpers.paginateRows(filteredData, 10);
 
+    // add the Pagination component
     const pagination = new Pagination(
       this.rootElement.querySelector('.pagination-container'),
       filteredData,
@@ -62,12 +64,15 @@ class DataGrid {
       }
     );
 
+    // add the SearchInput component
     const search = new SearchInput(
       this.rootElement.querySelector('.search-container'),
       (eventData) => {
 
+        // eventData is the value of the text input
         this.state.filter = eventData;
 
+        // set new data for the Pagination component
         pagination.data = Helpers.filterRows(this.state.rows, eventData);
         pagination.update();
 
@@ -186,6 +191,7 @@ class DataGrid {
   /**
    * Creates all table rows based on given input
    * @param {array} rows Array of objects
+   * @param {array} columns Array of objects { key, label }
    */
   createBody(rows = [], columns = []) {
 
@@ -199,6 +205,7 @@ class DataGrid {
 
       const tr = tBody.insertRow(i);
 
+      // add cells to the row
       columns.forEach((col, j) => {
         tr.insertCell(j).innerText = row[col.key];
       });
@@ -213,8 +220,8 @@ class DataGrid {
    */
   sortRows(key) {
 
-    let sortingKey = key;
-    let order = 'asc';
+    let sortingKey = key; // this avoids lint warning
+    let order = 'asc'; // default sorting
     const { sorting } = this.state;
 
     // determine how the row will be sorted
@@ -245,6 +252,8 @@ class DataGrid {
     } else {
 
       // revert to default sorting
+      // because sorting is in place, we have to copy the original array and set it the state
+      // TODO - maybe use lodash for sorting, although it's not necessary
       this.state.rows = this.rows.map(item => item);
 
     }
