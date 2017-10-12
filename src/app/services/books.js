@@ -1,9 +1,10 @@
 /**
  * Book object
- * @param {object} args Map that contains book attributes
+ * @param {object} args Map that contains book attributes { title, author, year, isbn }
  */
 export function Book(args) {
 
+  // define object properties
   Object.keys(args).forEach((key) => {
     Object.defineProperty(this, key, {
       value: args[key],
@@ -37,6 +38,7 @@ BooksService.prototype.get = function get() {
       .then(response => response.json())
       .then((data) => {
 
+        // create an array of Book objects
         const books = data.map(item => new Book(item));
 
         resolve(books);
